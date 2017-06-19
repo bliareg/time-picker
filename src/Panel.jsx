@@ -8,15 +8,16 @@ import classNames from 'classnames';
 function noop() {
 }
 
-function generateOptions(length, disabledOptions, hideDisabledOptions) {
+function generateOptions(length, disabledOptions, hideOptions) {
   const arr = [];
   for (let value = 0; value < length; value++) {
-    if (!disabledOptions || disabledOptions.indexOf(value) < 0 || !hideDisabledOptions) {
+    if (!hideOptions || !hideOptions.includes(value)) {
       arr.push(value);
     }
   }
   return arr;
 }
+
 
 class Panel extends Component {
   static propTypes = {
@@ -30,7 +31,9 @@ class Panel extends Component {
     disabledHours: PropTypes.func,
     disabledMinutes: PropTypes.func,
     disabledSeconds: PropTypes.func,
-    hideDisabledOptions: PropTypes.bool,
+    hideHours: PropTypes.func,
+    hideMinutes: PropTypes.func,
+    hideSeconds: PropTypes.func,
     onChange: PropTypes.func,
     onEsc: PropTypes.func,
     allowEmpty: PropTypes.bool,
@@ -88,8 +91,9 @@ class Panel extends Component {
   render() {
     const {
       prefixCls, className, placeholder, disabledHours, disabledMinutes,
-      disabledSeconds, hideDisabledOptions, allowEmpty, showHour, showMinute, showSecond,
+      disabledSeconds, allowEmpty, showHour, showMinute, showSecond,
       format, defaultOpenValue, clearText, onEsc, addon, use12Hours, onClear,
+      hideHours, hideMinutes, hideSeconds,
     } = this.props;
     const {
       value, currentSelectPanel,
@@ -98,9 +102,14 @@ class Panel extends Component {
     const disabledMinuteOptions = disabledMinutes(value ? value.hour() : null);
     const disabledSecondOptions = disabledSeconds(value ? value.hour() : null,
       value ? value.minute() : null);
-    const hourOptions = generateOptions(24, disabledHourOptions, hideDisabledOptions);
-    const minuteOptions = generateOptions(60, disabledMinuteOptions, hideDisabledOptions);
-    const secondOptions = generateOptions(60, disabledSecondOptions, hideDisabledOptions);
+    const hideHoursOptions = hideHours();
+    const hideMinutesOptions = hideMinutes(value ? value.hour() : null);
+    const hideSecondsOptions = hideSeconds(value ? value.hour() : null,
+      value ? value.minute() : null);
+
+    const hourOptions = generateOptions(24, disabledHourOptions, hideHoursOptions);
+    const minuteOptions = generateOptions(60, disabledMinuteOptions, hideMinutesOptions);
+    const secondOptions = generateOptions(60, disabledSecondOptions, hideSecondsOptions);
 
     return (
       <div className={classNames({ [`${prefixCls}-inner`]: true, [className]: !!className })}>

@@ -38,7 +38,9 @@ export default class Picker extends Component {
     disabledHours: PropTypes.func,
     disabledMinutes: PropTypes.func,
     disabledSeconds: PropTypes.func,
-    hideDisabledOptions: PropTypes.bool,
+    hideHours: PropTypes.func,
+    hideMinutes: PropTypes.func,
+    hideSeconds: PropTypes.func,
     onChange: PropTypes.func,
     onOpen: PropTypes.func,
     onClose: PropTypes.func,
@@ -64,7 +66,9 @@ export default class Picker extends Component {
     disabledHours: noop,
     disabledMinutes: noop,
     disabledSeconds: noop,
-    hideDisabledOptions: false,
+    hideHours: noop,
+    hideMinutes: noop,
+    hideSeconds: noop,
     placement: 'bottomLeft',
     onChange: noop,
     onOpen: noop,
@@ -155,9 +159,9 @@ export default class Picker extends Component {
   getPanelElement() {
     const {
       prefixCls, placeholder, disabledHours,
-      disabledMinutes, disabledSeconds, hideDisabledOptions,
+      disabledMinutes, disabledSeconds,
       allowEmpty, showHour, showMinute, showSecond, defaultOpenValue, clearText,
-      addon, use12Hours,
+      addon, use12Hours, hideHours, hideMinutes, hideSeconds,
     } = this.props;
     return (
       <Panel
@@ -178,7 +182,9 @@ export default class Picker extends Component {
         disabledHours={disabledHours}
         disabledMinutes={disabledMinutes}
         disabledSeconds={disabledSeconds}
-        hideDisabledOptions={hideDisabledOptions}
+        hideHours={hideHours}
+        hideMinutes={hideMinutes}
+        hideSeconds={hideSeconds}
         use12Hours={use12Hours}
         addon={addon}
       />
